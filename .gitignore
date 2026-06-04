@@ -1,0 +1,16 @@
+# data
+input.txt
+
+# model weights
+*.pt
+*.pth
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# misc
+.DS_Store
