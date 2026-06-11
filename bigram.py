@@ -13,9 +13,11 @@ eval_iters = 200
 
 torch.manual_seed(1337)
 
+# data loading
 with open('input.txt', 'r', encoding='utf-8') as f:
     text = f.read()
 
+# tokenization - character-level vocab
 chars = sorted(list(set(text)))
 vocab_size = len(chars)
 
@@ -24,12 +26,14 @@ itos = { i:ch for i,ch in enumerate(chars) }
 encode = lambda s: [stoi[c] for c in s]
 decode = lambda l: ''.join([itos[i] for i in l])
 
+# train/val split
 data = torch.tensor(encode(text), dtype=torch.long)
 n = int(0.9*len(data))
 train_data = data[:n]
 val_data = data[n:]
 
 
+# sample a random batch of inputs x and targets y
 def get_batch(split):
     data = train_data if split == 'train' else val_data
     ix = torch.randint(len(data) - block_size, (batch_size,))
@@ -38,6 +42,7 @@ def get_batch(split):
     return x, y
 
 
+# average loss over multiple batches to reduce noise
 @torch.no_grad()
 def estimate_loss():
     out = {}
@@ -53,6 +58,7 @@ def estimate_loss():
     return out
 
 
+# model - predicts next token using only the previous token (no context)
 class BigramLanguageModel(nn.Module):
 
     def __init__(self, vocab_size):
@@ -80,6 +86,7 @@ class BigramLanguageModel(nn.Module):
         return idx
 
 
+# training loop
 model = BigramLanguageModel(vocab_size)
 optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
 
@@ -95,4 +102,5 @@ for iter in range(max_iters):
     loss.backward()
     optimizer.step()
 
+# generate text from the trained model, starting from a zero (newline) token
 print(decode(model.generate(torch.zeros((1, 1), dtype=torch.long), max_new_tokens=500)[0].tolist()))
