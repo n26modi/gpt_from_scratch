@@ -1,6 +1,6 @@
 # GPT from Scratch
 
-Building a GPT language model from scratch, using [Andrej Karpathy's tutorial](https://www.youtube.com/watch?v=kCc8FmEb1nY) for inspiration.
+Building a GPT language model from scratch to deepen my understanding of the transformer architecture. Inspiration: [Andrej Karpathy's tutorial](https://www.youtube.com/watch?v=kCc8FmEb1nY).
 
 ## Setup
 
